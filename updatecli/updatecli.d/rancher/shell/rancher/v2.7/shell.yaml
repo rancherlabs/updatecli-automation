@@ -1,0 +1,77 @@
+---
+name: "Bump rancher/shell image version"
+scms:
+  shell:
+    kind: "github"
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      username: "{{ .github.username }}"
+      token: "{{ requiredEnv .github.token }}"
+      owner: "rancher"
+      repository: "shell"
+      branch: "master"
+  rancher:
+    kind: "github"
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      username: "{{ .github.username }}"
+      token: "{{ requiredEnv .github.token }}"
+      owner: "rancher"
+      repository: "rancher"
+      branch: "release/v2.7"
+
+pullrequests:
+  github:
+    title: "Update rancher/shell image version"
+    kind: "github"
+    scmid: "rancher"
+    spec:
+      automerge: false
+
+sources:
+  shell:
+    name: "Get rancher/shell image latest or -rc version"
+    kind: "gittag"
+    scmid: "shell"
+    spec:
+      versionfilter:
+        kind: "latest"
+
+conditions:
+  shell:
+    name: "Check rancher/shell image version in DockerHub"
+    kind: "dockerimage"
+    spec:
+      image: "rancher/shell"
+
+targets:
+  pkg-settings-setting:
+    name: "Update rancher/shell image version in release/v2.7/pkg/settings/setting.go"
+    kind: "file"
+    scmid: "rancher"
+    sourceid: "shell"
+    spec:
+      file: "pkg/settings/setting.go"
+      matchpattern: '"rancher/shell:v\d+\.\d+\.\d+.*"'
+      replacepattern: '"rancher/shell:{{ source `shell` }}"'
+  tests-framework-extensions-clusters-import:
+    name: "Update rancher/shell image version in release/v2.7/tests/framework/extensions/clusters/import.go"
+    kind: "file"
+    scmid: "rancher"
+    sourceid: "shell"
+    spec:
+      file: "tests/framework/extensions/clusters/import.go"
+      matchpattern: '"rancher/shell:v\d+\.\d+\.\d+.*"'
+      replacepattern: '"rancher/shell:{{ source `shell` }}"'
+  tests-v2-validation-charts-monitoring:
+    name: "Update rancher/shell image version in release/v2.7/tests/v2/validation/charts/monitoring.go"
+    kind: "file"
+    scmid: "rancher"
+    sourceid: "shell"
+    spec:
+      file: "tests/v2/validation/charts/monitoring.go"
+      matchpattern: '"rancher/shell:v\d+\.\d+\.\d+.*"'
+      replacepattern: '"rancher/shell:{{ source `shell` }}"'
+
