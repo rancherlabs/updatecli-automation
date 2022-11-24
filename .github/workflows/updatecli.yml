@@ -28,7 +28,7 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3
         with:
-          version: 'v3.10.2'
+          version: 'latest'
 
       - name: Install Updatecli
         uses: updatecli/updatecli-action@v2
