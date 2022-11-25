@@ -43,23 +43,23 @@ pullrequests:
       automerge: false
 
 sources:
-  source1:
+  shell-git-tag:
     name: "Get rancher/shell image latest or -rc version"
     kind: "gittag"
     scmid: "shell"
     spec:
       versionfilter:
         kind: "latest"
-  source2:
+  helm-project-operator-commit-hash:
     name: "Get commit hash"
     kind: "shell"
     dependson:
-      - "source1"
+      - "shell-git-tag"
     scmid: "helm-project-operator"
-    sourceid: "source1"
+    sourceid: "shell-git-tag"
     spec:
-      command: '../../updatecli/scripts/prometheus-federator-retrieve-commit-hash.sh {{ source "source1" }}'
-  source3:
+      command: '../../updatecli/scripts/prometheus-federator-retrieve-commit-hash.sh {{ source "shell-git-tag" }}'
+  prometheus-federator-release:
     name: "Get prometheus-federator latest release"
     kind: "githubrelease"
     spec:
@@ -73,13 +73,13 @@ sources:
       - trimprefix: "v"
 
 conditions:
-  condition1:
+  shell-image-dockerhub:
     name: "Check rancher/shell image version in DockerHub"
     kind: "dockerimage"
-    sourceid: "source1"
+    sourceid: "shell-git-tag"
     spec:
       image: "rancher/shell"
-  condition2:
+  shell-image-helm-project-1:
     name: "Check rancher/shell image version in Helm Project Operator chart"
     kind: "yaml"
     scmid: "helm-project-operator"
@@ -88,41 +88,41 @@ conditions:
       file: "charts/helm-project-operator/values.yaml"
       key: "cleanup[0].image.repository"
       value: "rancher/shell"
-  condition3:
+  shell-image-helm-project-2:
     name: "Check rancher/shell image version in Helm Project Operator chart"
     kind: "yaml"
     scmid: "helm-project-operator"
-    sourceid: "source1"
+    sourceid: "shell-git-tag"
     spec:
       file: "charts/helm-project-operator/values.yaml"
       key: "cleanup[0].image.tag"
-  condition4:
+  shell-image-prometheus-federator:
     name: "Check rancher/shell image in prometheus-federator"
     kind: "yaml"
     scmid: "prometheus-federator"
     disablesourceinput: true
     spec:
-      file: 'charts/prometheus-federator/{{ source "source3" }}/charts/helmProjectOperator/values.yaml'
+      file: 'charts/prometheus-federator/{{ source "prometheus-federator-release" }}/charts/helmProjectOperator/values.yaml'
       key: "cleanup[0].image.repository"
       value: "rancher/shell"
 
 targets:
-  commit1:
+  commit-bump-version:
     name: "Update Helm Project Generator go.mod and git commit version"
     kind: "shell"
     scmid: "prometheus-federator"
-    sourceid: "source2"
+    sourceid: "helm-project-operator-commit-hash"
     spec:
       command: "../../updatecli/scripts/prometheus-federator-update-commit-hash.sh"
       environments:
         - name: PATH
         - name: HOME
-  commit2:
+  commit-make-chart:
     name: "Make Prometheus Federator chart"
     kind: "shell"
     scmid: "prometheus-federator"
     dependson:
-      - "commit1"
+      - "commit-bump-version"
     disablesourceinput: true
     spec:
       command: "../../updatecli/scripts/prometheus-federator-make-chart.sh"
