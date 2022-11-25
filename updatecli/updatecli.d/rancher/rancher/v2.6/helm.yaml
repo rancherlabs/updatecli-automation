@@ -1,0 +1,57 @@
+---
+name: "Bump Helm version"
+scms:
+  rancher:
+    kind: "github"
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      username: "{{ .github.username }}"
+      token: "{{ requiredEnv .github.token }}"
+      owner: "rancher"
+      repository: "rancher"
+      branch: "release/v2.6"
+
+pullrequests:
+  github:
+    title: "Bump Helm version"
+    kind: "github"
+    scmid: "rancher"
+    spec:
+      automerge: false
+
+sources:
+  helm:
+    name: "Get Helm latest release version"
+    kind: "githubrelease"
+    spec:
+      owner: "helm"
+      repository: "helm"
+      token: "{{ requiredEnv .github.token }}"
+      branch: "master"
+      versionfilter:
+        kind: "semver"
+
+conditions:
+  dockerfile-dapper:
+    name: "Check if 'ENV HELM_VERSION' is set"
+    kind: "dockerfile"
+    scmid: "rancher"
+    sourceid: "helm"
+    spec:
+      file: "Dockerfile.dapper"
+      instruction:
+        keyword: "ENV"
+        matcher: "HELM_VERSION"
+
+targets:
+  dockerfile-dapper:
+    name: "Bump Helm version"
+    kind: "dockerfile"
+    scmid: "rancher"
+    sourceid: "helm"
+    spec:
+      file: "Dockerfile.dapper"
+      instruction:
+        keyword: "ENV"
+        matcher: "HELM_VERSION"

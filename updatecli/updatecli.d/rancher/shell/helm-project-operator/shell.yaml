@@ -1,0 +1,67 @@
+---
+name: "Bump rancher/shell image version"
+scms:
+  shell:
+    kind: "github"
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      username: "{{ .github.username }}"
+      token: "{{ requiredEnv .github.token }}"
+      owner: "rancher"
+      repository: "shell"
+      branch: "master"
+  helm-project-operator:
+    kind: "github"
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      username: "{{ .github.username }}"
+      token: "{{ requiredEnv .github.token }}"
+      owner: "rancher"
+      repository: "helm-project-operator"
+      branch: "main"
+
+pullrequests:
+  github:
+    kind: "github"
+    scmid: "helm-project-operator"
+    spec:
+      automerge: false
+
+sources:
+  shell:
+    name: "Get rancher/shell image latest or -rc version"
+    kind: "gittag"
+    scmid: "shell"
+    spec:
+      versionfilter:
+        kind: "latest"
+
+conditions:
+  shell:
+    name: "Check rancher/shell image version in DockerHub"
+    kind: "dockerimage"
+    spec:
+      image: "rancher/shell"
+  chart:
+    name: "Check rancher/shell image version in Helm Project Operator chart"
+    kind: "yaml"
+    scmid: "helm-project-operator"
+    disablesourceinput: true
+    spec:
+      file: "charts/helm-project-operator/values.yaml"
+      key: "cleanup[0].image.repository"
+      value: "rancher/shell"
+
+targets:
+  chart:
+    name: "Bump rancher/shell image version"
+    kind: "yaml"
+    scmid: "helm-project-operator"
+    sourceid: "shell"
+    spec:
+      file: "charts/helm-project-operator/values.yaml"
+      key: "cleanup[0].image.tag"
+      value: '{{ source "shell" }}'
+

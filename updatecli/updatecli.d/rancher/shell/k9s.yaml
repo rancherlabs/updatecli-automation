@@ -1,0 +1,56 @@
+---
+name: "Bump K9s version"
+scms:
+  shell:
+    kind: "github"
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      username: "{{ .github.username }}"
+      token: "{{ requiredEnv .github.token }}"
+      owner: "rancher"
+      repository: "shell"
+      branch: "master"
+
+pullrequests:
+  github:
+    kind: "github"
+    scmid: "shell"
+    spec:
+      automerge: false
+
+sources:
+  k9s:
+    name: "Get K9s latest release version"
+    kind: "githubrelease"
+    spec:
+      owner: "derailed"
+      repository: "k9s"
+      token: "{{ requiredEnv .github.token }}"
+      branch: "master"
+      versionfilter:
+        kind: "latest"
+
+conditions:
+  k9s:
+    name: "Check if 'ENV K9S_VERSION' is set"
+    kind: "dockerfile"
+    scmid: "shell"
+    sourceid: "k9s"
+    spec:
+      file: "package/Dockerfile"
+      instruction:
+        keyword: "ENV"
+        matcher: "K9S_VERSION"
+
+targets:
+  k9s:
+    name: "Bump K9s version"
+    kind: "dockerfile"
+    scmid: "shell"
+    sourceid: "k9s"
+    spec:
+      file: "package/Dockerfile"
+      instruction:
+        keyword: "ENV"
+        matcher: "K9S_VERSION"
