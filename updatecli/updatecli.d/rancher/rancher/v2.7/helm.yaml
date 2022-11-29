@@ -43,6 +43,16 @@ conditions:
       instruction:
         keyword: "ENV"
         matcher: "HELM_VERSION"
+  package-dockerfile:
+    name: "Check if 'ENV HELM_VERSION' is set"
+    kind: "dockerfile"
+    scmid: "rancher"
+    sourceid: "helm"
+    spec:
+      file: "package/Dockerfile"
+      instruction:
+        keyword: "ENV"
+        matcher: "HELM_VERSION"
 
 targets:
   dockerfile-dapper:
@@ -52,6 +62,16 @@ targets:
     sourceid: "helm"
     spec:
       file: "Dockerfile.dapper"
+      instruction:
+        keyword: "ENV"
+        matcher: "HELM_VERSION"
+  package-dockerfile:
+    name: "Bump Helm version"
+    kind: "dockerfile"
+    scmid: "rancher"
+    sourceid: "helm"
+    spec:
+      file: "package/Dockerfile"
       instruction:
         keyword: "ENV"
         matcher: "HELM_VERSION"
