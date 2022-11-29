@@ -12,6 +12,12 @@ We use Updatecli for this automation, instead of Dependabot or Renovate, because
 
 For detailed information on how to use Updatecli, please consult its [documentation](https://www.updatecli.io/docs/prologue/introduction/) page.
 
+## Scheduled workflow
+
+The automation runs as a GitHub Actions scheduled workflow once per day.
+
+Manual execution of the pipelines can be [triggered](https://github.com/rancherlabs/updatecli-automation/actions/workflows/updatecli.yml) when needed.
+
 ## Scope
 
 All Rancher owned repositories in [Rancher](https://github.com/rancher) and [Rancher Labs](https://github.com/rancherlabs) can be targeted by this automation.
