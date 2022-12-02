@@ -11,6 +11,8 @@ scms:
       owner: "rancher"
       repository: "rancher"
       branch: "release/v2.7"
+      commitmessage:
+         title: "Bump Kustomize version"
 
 pullrequests:
   github:
@@ -32,6 +34,8 @@ sources:
       versionfilter:
         kind: "regex"
         pattern: "kustomize/v.*"
+    transformers:
+      - trimprefix: "kustomize/"
 
 conditions:
   dockerfile-dapper:
@@ -56,27 +60,14 @@ conditions:
         matcher: "KUSTOMIZE_VERSION"
 
 targets:
-  dockerfile-dapper:
+  dockerfiles:
     name: "Bump Kustomize version"
-    kind: "dockerfile"
+    kind: "file"
     scmid: "rancher"
     sourceid: "kustomize"
     spec:
-      file: "Dockerfile.dapper"
-      instruction:
-        keyword: "ENV"
-        matcher: "KUSTOMIZE_VERSION"
-    transformers:
-      - trimprefix: "kustomize/"
-  package-dockerfile:
-    name: "Bump Kustomize version"
-    kind: "dockerfile"
-    scmid: "rancher"
-    sourceid: "kustomize"
-    spec:
-      file: "package/Dockerfile"
-      instruction:
-        keyword: "ENV"
-        matcher: "KUSTOMIZE_VERSION"
-    transformers:
-      - trimprefix: "kustomize/"
+      files:
+        - "Dockerfile.dapper"
+        - "package/Dockerfile"
+      matchpattern: 'ENV KUSTOMIZE_VERSION v\d+\.\d+\.\d+(-\w+)?'
+      replacepattern: 'ENV KUSTOMIZE_VERSION {{ source "kustomize" }}'
