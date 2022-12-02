@@ -11,6 +11,8 @@ scms:
       owner: "rancher"
       repository: "rancher"
       branch: "release/v2.6"
+      commitmessage:
+        title: "Bump Helm version"
 
 pullrequests:
   github:
@@ -55,23 +57,14 @@ conditions:
         matcher: "HELM_VERSION"
 
 targets:
-  dockerfile-dapper:
+  dockerfiles:
     name: "Bump Helm version"
-    kind: "dockerfile"
+    kind: "file"
     scmid: "rancher"
     sourceid: "helm"
     spec:
-      file: "Dockerfile.dapper"
-      instruction:
-        keyword: "ENV"
-        matcher: "HELM_VERSION"
-  package-dockerfile:
-    name: "Bump Helm version"
-    kind: "dockerfile"
-    scmid: "rancher"
-    sourceid: "helm"
-    spec:
-      file: "package/Dockerfile"
-      instruction:
-        keyword: "ENV"
-        matcher: "HELM_VERSION"
+      files:
+        - "Dockerfile.dapper"
+        - "package/Dockerfile"
+      matchpattern: 'ENV HELM_VERSION v\d+\.\d+\.\d+(-\w+)?'
+      replacepattern: 'ENV HELM_VERSION {{ source "helm" }}'
