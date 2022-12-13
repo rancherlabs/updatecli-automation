@@ -12,10 +12,10 @@ scms:
       repository: "rancher"
       branch: "release/v2.7"
 
-pullrequests:
+actions:
   github:
     title: "Bump Helm version"
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "rancher"
     spec:
       automerge: false

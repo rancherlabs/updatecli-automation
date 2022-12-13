@@ -12,10 +12,10 @@ scms:
       repository: "rancher"
       branch: "release/v2.6"
 
-pullrequests:
+actions:
   github:
     title: "Bump Kustomize version"
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "rancher"
     spec:
       automerge: false

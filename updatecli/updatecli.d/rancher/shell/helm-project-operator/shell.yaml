@@ -22,9 +22,9 @@ scms:
       repository: "helm-project-operator"
       branch: "main"
 
-pullrequests:
+actions:
   github:
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "helm-project-operator"
     spec:
       automerge: false
