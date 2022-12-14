@@ -21,6 +21,8 @@ scms:
       owner: "rancher"
       repository: "helm-project-operator"
       branch: "main"
+      commitmessage:
+         title: "Bump rancher/shell image version"
 
 pullrequests:
   github:
@@ -57,11 +59,11 @@ conditions:
 targets:
   chart:
     name: "Bump rancher/shell image version"
-    kind: "yaml"
+    kind: "file"
     scmid: "helm-project-operator"
     sourceid: "shell"
     spec:
       file: "charts/helm-project-operator/values.yaml"
-      key: "cleanup[0].image.tag"
-      value: '{{ source "shell" }}'
+      matchpattern: '(repository:\s+rancher\/shell\n\s+tag:)\s+.*'
+      replacepattern: '$1 {{ source "shell" }}'
 
