@@ -14,10 +14,10 @@ scms:
       commitmessage:
          title: "Bump Kustomize version"
 
-pullrequests:
+actions:
   github:
     title: "Bump Kustomize version"
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "rancher"
     spec:
       automerge: false

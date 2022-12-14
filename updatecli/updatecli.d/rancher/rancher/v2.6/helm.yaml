@@ -14,10 +14,10 @@ scms:
       commitmessage:
         title: "Bump Helm version"
 
-pullrequests:
+actions:
   github:
     title: "Bump Helm version"
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "rancher"
     spec:
       automerge: false

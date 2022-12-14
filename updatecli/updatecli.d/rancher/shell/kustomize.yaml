@@ -12,9 +12,9 @@ scms:
       repository: "shell"
       branch: "master"
 
-pullrequests:
+actions:
   github:
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "shell"
     spec:
       automerge: false

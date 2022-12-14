@@ -24,9 +24,9 @@ scms:
       commitmessage:
          title: "Bump rancher/shell image version"
 
-pullrequests:
+actions:
   github:
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "helm-project-operator"
     spec:
       automerge: false

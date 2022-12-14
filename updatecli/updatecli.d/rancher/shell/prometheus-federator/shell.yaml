@@ -34,10 +34,10 @@ scms:
       branch: "main"
       directory: "tmpdir-prometheus-federator/helm-project-operator"
 
-pullrequests:
+actions:
   github:
     title: "Bump rancher/shell image version"
-    kind: "github"
+    kind: "github/pullrequest"
     scmid: "prometheus-federator"
     spec:
       automerge: false
