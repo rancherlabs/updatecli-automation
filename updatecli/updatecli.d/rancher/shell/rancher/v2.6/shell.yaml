@@ -56,21 +56,4 @@ targets:
       file: "pkg/settings/setting.go"
       matchpattern: '"rancher/shell:v\d+\.\d+\.\d+.*"'
       replacepattern: '"rancher/shell:{{ source `shell` }}"'
-  tests-framework-extensions-clusters-import:
-    name: "Update rancher/shell image version in release/v2.6/tests/framework/extensions/clusters/import.go"
-    kind: "file"
-    scmid: "rancher"
-    sourceid: "shell"
-    spec:
-      file: "tests/framework/extensions/clusters/import.go"
-      matchpattern: '"rancher/shell:v\d+\.\d+\.\d+.*"'
-      replacepattern: '"rancher/shell:{{ source `shell` }}"'
-  tests-v2-validation-charts-monitoring:
-    name: "Update rancher/shell image version in release/v2.6/tests/v2/validation/charts/monitoring.go"
-    kind: "file"
-    scmid: "rancher"
-    sourceid: "shell"
-    spec:
-      file: "tests/v2/validation/charts/monitoring.go"
-      matchpattern: '"rancher/shell:v\d+\.\d+\.\d+.*"'
-      replacepattern: '"rancher/shell:{{ source `shell` }}"'
+
