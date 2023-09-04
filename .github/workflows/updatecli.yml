@@ -18,7 +18,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Used during the update of rancher/shell in prometheus-federator/shell
       - name: Install Go
