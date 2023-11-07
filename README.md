@@ -1,6 +1,6 @@
-# Updatecli automation
+### Note: This repo and automation is now archived and kept for historical purpose. Teams in Rancher are using Updatecli on a per-repo setup, instead of on a central repo.
 
-*Note:* This automation is still work in progress and subject to change.
+# Updatecli automation
 
 This project uses [Updatecli](https://github.com/updatecli/updatecli) to automate and orchestrate security related updates and versions bumps in Rancher owned projects.
 
