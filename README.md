@@ -1,4 +1,4 @@
-### Note: This repo and automation is now archived and kept for historical purpose. Teams in Rancher are using Updatecli on a per-repo setup, instead of on a central repo.
+### Note: This repo and automation is now archived and kept for historical purposes only. Teams in Rancher are using Updatecli on a per-repo setup, instead of on a central repo - which is the recommended approach going forwards.
 
 # Updatecli automation
 
